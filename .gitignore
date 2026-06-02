@@ -1,0 +1,25 @@
+# Python virtual environments
+.venv/
+venv/
+ENV/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebooks checkpoint folders
+.ipynb_checkpoints/
+
+# IDE files
+.vscode/
+.idea/
+
+# Local/System specific files
+.DS_Store
+Thumbs.db
+
+# Live fetched raw data files (to keep the repo clean and only track static assets if desired,
+# but we can track the main datasets)
+# Let's ignore live_nav CSVs to keep repo size small, but we will commit our code files
+data/raw/live_nav_*.csv

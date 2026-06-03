@@ -6,8 +6,8 @@ from sqlalchemy import create_engine, text
 # Configuration
 PROCESSED_DIR = "data/processed"
 DB_PATH = "bluestock_mf.db"
-SCHEMA_PATH = "schema.sql"
-QUERIES_PATH = "queries.sql"
+SCHEMA_PATH = "sql/schema.sql"
+QUERIES_PATH = "sql/queries.sql"
 REPORTS_DIR = "reports"
 
 # Mappings of Processed CSV -> DB Table

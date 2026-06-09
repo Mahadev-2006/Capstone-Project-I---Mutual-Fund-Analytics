@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluestock Mutual Fund Analytics Dashboard</title>
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand-section">
+                <div class="logo-container">
+                    <svg viewBox="0 0 100 100" class="brand-logo">
+                        <!-- Stylized modern bull / growth chart logo using brand colors -->
+                        <rect x="15" y="15" width="70" height="70" rx="15" fill="#012970" />
+                        <path d="M30 70 L45 55 L55 60 L75 35" stroke="#414BEA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        <circle cx="75" cy="35" r="7" fill="#F05537" />
+                        <path d="M30 70 L75 70" stroke="#f4f6f9" stroke-width="4" stroke-dasharray="4,4" />
+                    </svg>
+                    <div class="brand-text">
+                        <span class="brand-name">bluestock</span>
+                        <span class="brand-subtitle">MUTUAL FUND ANALYTICS</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="page1" id="btn-page1">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Industry Overview</span>
+                </button>
+                <button class="nav-item" data-tab="page2" id="btn-page2">
+                    <i class="fa-solid fa-seedling"></i>
+                    <span>Fund Performance</span>
+                </button>
+                <button class="nav-item" data-tab="page3" id="btn-page3">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span>Investor Analytics</span>
+                </button>
+                <button class="nav-item" data-tab="page4" id="btn-page4">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <span>SIP & Market Trends</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Data Refresh: <span id="refresh-date">Dec 2025</span></p>
+                <span class="badge">v1.2.0</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-info">
+                    <h1 id="page-title">Industry Overview</h1>
+                    <p id="page-description">Mutual Fund assets, monthly inflows, schemes, and market share overview.</p>
+                </div>
+                <div class="header-actions">
+                    <!-- Slicer Panels (Dynamically shown based on active page) -->
+                    <div class="slicers-container" id="slicers-container">
+                        <!-- Slicers will be injected here dynamically -->
+                    </div>
+                    <button class="btn btn-primary" id="btn-reset-filters">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Container -->
+            <div class="dashboard-body">
+                <!-- ==================== PAGE 1: INDUSTRY OVERVIEW ==================== -->
+                <section class="tab-content active" id="page1">
+                    <!-- KPI Grid -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card" id="kpi-aum">
+                            <div class="kpi-header">
+                                <span class="kpi-title">TOTAL AUM</span>
+                                <div class="kpi-icon icon-blue"><i class="fa-solid fa-vault"></i></div>
+                            </div>
+                            <div class="kpi-value" id="val-aum">₹81.25L Cr</div>
+                            <div class="kpi-meta"><span class="trend trend-up"><i class="fa-solid fa-circle-arrow-up"></i> +12.4%</span> vs last year</div>
+                        </div>
+                        <div class="kpi-card" id="kpi-sip">
+                            <div class="kpi-header">
+                                <span class="kpi-title">MONTHLY SIP INFLOWS</span>
+                                <div class="kpi-icon icon-coral"><i class="fa-solid fa-calendar-check"></i></div>
+                            </div>
+                            <div class="kpi-value" id="val-sip">₹31,002 Cr</div>
+                            <div class="kpi-meta"><span class="trend trend-up"><i class="fa-solid fa-circle-arrow-up"></i> +24.8%</span> YoY Growth</div>
+                        </div>
+                        <div class="kpi-card" id="kpi-folios">
+                            <div class="kpi-header">
+                                <span class="kpi-title">TOTAL FOLIOS</span>
+                                <div class="kpi-icon icon-navy"><i class="fa-solid fa-folder-open"></i></div>
+                            </div>
+                            <div class="kpi-value" id="val-folios">26.12 Cr</div>
+                            <div class="kpi-meta"><span class="trend trend-up"><i class="fa-solid fa-circle-arrow-up"></i> +15.2 Cr</span> Net addition</div>
+                        </div>
+                        <div class="kpi-card" id="kpi-schemes">
+                            <div class="kpi-header">
+                                <span class="kpi-title">ACTIVE SCHEMES</span>
+                                <div class="kpi-icon icon-teal"><i class="fa-solid fa-cubes"></i></div>
+                            </div>
+                            <div class="kpi-value" id="val-schemes">1,908</div>
+                            <div class="kpi-meta">Across 40 Fund Houses</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid-2x1">
+                        <div class="chart-card card-large">
+                            <div class="card-header">
+                                <h3>Industry AUM Growth Trend (2022 - 2025)</h3>
+                                <p>Monthly aggregate assets under management in Lakh Crores</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-aum-trend"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Market Share: AUM by AMC</h3>
+                                <p>Assets Under Management in Lakh Crores by Fund House</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-aum-by-amc"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== PAGE 2: FUND PERFORMANCE ==================== -->
+                <section class="tab-content" id="page2">
+                    <!-- Scatter & Benchmark Grid -->
+                    <div class="charts-grid-2x1">
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Risk vs. Return Landscape</h3>
+                                <p>3-Year Annualized Return (X) vs. Annualized Standard Deviation (Y) | Bubble Size = AUM</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-risk-return"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>NAV Growth vs. Benchmark Index</h3>
+                                <p>Performance comparison over 3 Years (Reindexed to 100)</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-nav-vs-benchmark"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scorecard Table -->
+                    <div class="table-card">
+                        <div class="card-header-table">
+                            <div class="header-left">
+                                <h3>Mutual Fund Performance Scorecard</h3>
+                                <p>Sortable composite rank scorecard (Click any row to drill down into NAV details)</p>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="scorecard-table">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="rank">Rank</th>
+                                        <th data-sort="scheme_name">Scheme Name</th>
+                                        <th data-sort="fund_house">Fund House</th>
+                                        <th data-sort="category">Category</th>
+                                        <th data-sort="return_3yr_pct">3Y Return</th>
+                                        <th data-sort="sharpe_ratio">Sharpe Ratio</th>
+                                        <th data-sort="alpha">Alpha</th>
+                                        <th data-sort="expense_ratio_pct">Expense Ratio</th>
+                                        <th data-sort="max_drawdown_pct">Max Drawdown</th>
+                                        <th data-sort="composite_score">Score (0-100)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scorecard-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== PAGE 3: INVESTOR ANALYTICS ==================== -->
+                <section class="tab-content" id="page3">
+                    <div class="charts-grid-2x2">
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Geographic Distribution (Total Inflows)</h3>
+                                <p>Total transaction amount in Crores by State</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-state-inflows"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>SIP vs. Lumpsum vs. Redemption</h3>
+                                <p>Asset allocation and transactional volume split</p>
+                            </div>
+                            <div class="chart-container donut-chart-container">
+                                <canvas id="chart-transaction-split"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Demographic Trends: Age vs. Average SIP</h3>
+                                <p>Average Systematic Investment Plan amount (INR) by Age Bracket</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-age-vs-sip"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Monthly Transaction Volume</h3>
+                                <p>Total number of investor transactions processed per month</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-monthly-volume"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== PAGE 4: SIP & MARKET TRENDS ==================== -->
+                <section class="tab-content" id="page4">
+                    <div class="charts-grid-2x1">
+                        <div class="chart-card card-large">
+                            <div class="card-header">
+                                <h3>SIP Inflow vs. Nifty 50 Index Trend (2022 - 2025)</h3>
+                                <p>Monthly SIP Inflows (Crores, Bar) vs. Nifty 50 Close Value (Line)</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-sip-vs-nifty"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Top 5 Categories by Net Inflow (FY25)</h3>
+                                <p>Aggregate Net Inflows in Crores (April 2024 - March 2025)</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-top-categories"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="charts-grid-2x1">
+                        <div class="chart-card card-large">
+                            <div class="card-header">
+                                <h3>Category Net Inflow Heatmap</h3>
+                                <p>Monthly Net Inflow intensity (Crores) across different fund categories</p>
+                            </div>
+                            <div class="chart-container-heatmap">
+                                <div id="heatmap-grid" class="heatmap-grid">
+                                    <!-- Generated via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Drill-Through NAV Detail Modal -->
+    <div id="drillmodal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header-section">
+                <div class="modal-title-group">
+                    <h2 id="modal-scheme-name">Scheme Name</h2>
+                    <p id="modal-scheme-meta">Category: Equity | Fund House: SBI Mutual Fund</p>
+                </div>
+                <div class="modal-kpi-group">
+                    <div class="modal-kpi">
+                        <span class="m-kpi-title">3Y Return</span>
+                        <span class="m-kpi-value" id="m-val-return">18.5%</span>
+                    </div>
+                    <div class="modal-kpi">
+                        <span class="m-kpi-title">Sharpe</span>
+                        <span class="m-kpi-value" id="m-val-sharpe">1.25</span>
+                    </div>
+                    <div class="modal-kpi">
+                        <span class="m-kpi-title">Alpha</span>
+                        <span class="m-kpi-value" id="m-val-alpha">3.4%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-chart-container">
+                    <canvas id="chart-modal-nav"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data payloads loaded -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
